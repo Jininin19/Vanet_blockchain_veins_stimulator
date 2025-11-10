@@ -1,5 +1,6 @@
+
 # vanet_blockchain
-This Repo is a project of integrating HLF(Blockchain) with the Veins(VANET)
+This Repo is a project of integrating HLF(Blockchain) with the Veins(VANET), to be improved and used for research purposes.
 
 # Pre-Requisites:
 1. Download and Install [HLF v2.4](https://www.hyperledger.org/use/fabric) and [Hyperledger Explorer](https://www.hyperledger.org/use/explorer).
@@ -16,3 +17,6 @@ This Repo is a project of integrating HLF(Blockchain) with the Veins(VANET)
 5. Now start the Omnetpp and import the veins-master project.
 6. Now you just have to build the project after importing it.
 7. Run the project and enjoy.
+
+
+

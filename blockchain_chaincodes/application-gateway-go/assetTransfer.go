@@ -13,9 +13,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net"
+	"os"
 	"path"
 	"time"
 
@@ -52,7 +52,7 @@ type Ser struct {
 var contract *client.Contract
 
 // Asset describes basic details of what makes up a simple asset
-//Insert struct field in alphabetic order => to achieve determinism across languages
+// Insert struct field in alphabetic order => to achieve determinism across languages
 // golang keeps the order when marshal to json but doesn't order automatically
 type Asset struct {
 	VIN         string `json:"VIN"`
@@ -274,7 +274,7 @@ func newIdentity() *identity.X509Identity {
 }
 
 func loadCertificate(filename string) (*x509.Certificate, error) {
-	certificatePEM, err := ioutil.ReadFile(filename)
+	certificatePEM, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read certificate file: %w", err)
 	}
@@ -283,11 +283,12 @@ func loadCertificate(filename string) (*x509.Certificate, error) {
 
 // newSign creates a function that generates a digital signature from a message digest using a private key.
 func newSign() identity.Sign {
-	files, err := ioutil.ReadDir(keyPath)
+	//files, err := ioutil.ReadDir(keyPath)
+	files, err := os.ReadDir(keyPath)
 	if err != nil {
 		panic(fmt.Errorf("failed to read private key directory: %w", err))
 	}
-	privateKeyPEM, err := ioutil.ReadFile(path.Join(keyPath, files[0].Name()))
+	privateKeyPEM, err := os.ReadFile(path.Join(keyPath, files[0].Name()))
 
 	if err != nil {
 		panic(fmt.Errorf("failed to read private key file: %w", err))
@@ -307,8 +308,8 @@ func newSign() identity.Sign {
 }
 
 /*
- This type of transaction would typically only be run once by an application the first time it was started after its
- initial deployment. A new version of the chaincode deployed later would likely not need to run an "init" function.
+This type of transaction would typically only be run once by an application the first time it was started after its
+initial deployment. A new version of the chaincode deployed later would likely not need to run an "init" function.
 */
 func initLedger(contract *client.Contract) {
 	fmt.Printf("Submit Transaction: InitLedger, function creates the initial set of assets on the ledger \n")
@@ -423,7 +424,7 @@ func exampleErrorHandling(contract *client.Contract) {
 	}
 }
 
-//Format JSON data
+// Format JSON data
 func formatJSON(data []byte) string {
 	var prettyJSON bytes.Buffer
 	if err := json.Indent(&prettyJSON, data, " ", ""); err != nil {
